@@ -1,0 +1,21 @@
+{
+    "manifest_version": 3,
+    "version": "0.1",
+    "name": "CircleCI Job Rerunner",
+    "permissions": [
+        "storage"
+    ],
+    "options_ui": {
+        "page": "options.html"
+    },
+    "content_scripts": [
+        {
+          "matches": [
+            "https://app.circleci.com/*/*/workflows/*/jobs/*",
+            "https://circleci.com/extension-job-rerun-2023*"
+        ],
+          "js": ["content-script.js"],
+          "runAt": "document_end"
+        }
+    ]
+}
