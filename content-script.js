@@ -7,10 +7,10 @@ const isCircleCIApp = ()=>{
 if (isCircleCIApp()){
     // Logic for button
     let container = document.querySelector(".css-1p4cmro")
-    const interval = setInterval(()=>{
+    const interval = setInterval(async ()=>{
         if (container){
             clearInterval(interval)
-            addButton()
+            await addButton()
             return
         }
         container = document.querySelector(".css-1p4cmro")
@@ -26,7 +26,8 @@ if (isCircleCIApp()){
         rerunJobButton.addEventListener("click", async () => {
             const {token} = await chrome.storage.sync.get("token");
             const data = {...getDataFromUrl(), token, originUrl: window.location.href}
-            open(`https://circleci.com/extension-job-rerun-2023?${JSON.stringify(data)}`)
+            await chrome.storage.sync.set(data)
+            open(`https://circleci.com/extension-job-rerun-2023`)
         });
     }
 
@@ -93,7 +94,7 @@ if (!isCircleCIApp()){
 
     document.body.setHTML('Loading...')
     document.onreadystatechange = async ()=>{
-        const {workflowId, jobNumber, token, originUrl} = getDataFromUrl()
+        const {workflowId, jobNumber, token, originUrl} = await chrome.storage.sync.get(["workflowId", "jobNumber", "token", "originUrl"])
         const newWorkflowId = await newWorkflowForJob(workflowId, jobNumber, token);
         const jobUrl = await getJobUrl(workflowId, jobNumber, newWorkflowId, originUrl)
         window.location.href = jobUrl
