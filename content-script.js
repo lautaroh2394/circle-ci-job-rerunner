@@ -57,11 +57,6 @@ if (!isCircleCIApp()){
         return url
     }
     
-    const getDataFromUrl = ()=>{
-        let params = decodeURI(window.location.href.split('?')[1])
-        return JSON.parse(params)
-    }
-    
     const newWorkflowForJob = async (workflowId, jobNumber, token)=>{
         const workflowJobs = await getWorkflowJobs(workflowId, token)
         const jobId = workflowJobs.find(job => job.job_number == jobNumber).id
